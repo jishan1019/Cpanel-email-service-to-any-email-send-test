@@ -6,31 +6,35 @@ const port = process.env.PORT || 4000;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const nodemailer = require("nodemailer");
 
+const getFbVideoInfo = require("fb-downloader-scrapper");
+
 // Middlewere--------------------
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 // Nodemailer transporter object
 const transporter = nodemailer.createTransport({
-  host: "create_email_host",
+  host: "mail.appslabbd.buzz",
   port: 465, //Outgoing Server SMTP port
   secure: true,
   auth: {
-    user: "create_email_username",
-    pass: "create_email_password",
+    user: "jishan@appslabbd.buzz",
+    pass: "jishan155376@",
   },
 });
 
 app.get("/send-email", async (req, res) => {
   try {
-    const to = "tonviatie@send4.uk";
+    const to = "imranislamjishan80@gmail.com";
     const subject = "Test Email Hosting";
     const text = "Test Email Hosting";
-    const html = `<p>Hello I am test email. i send from hosting service</p>`;
+    const html = `<p>Hello This is test email.</p>`;
 
     // Send mail with defined transport object
     let info = await transporter.sendMail({
-      from: '"Jishan Hossain" <create_email_username>',
+      from: '"Jishan Hossain" <jishan@appslabbd.buzz>',
       to,
       subject,
       text,
@@ -44,6 +48,20 @@ app.get("/send-email", async (req, res) => {
       .status(500)
       .json({ error: "Internal server error. Failed to send email." });
   }
+});
+
+app.get("/downloadFb", async (req, res) => {
+  getFbVideoInfo("https://www.facebook.com/reel/475691028220396")
+    .then((result) => {
+      res.json({
+        result,
+      });
+    })
+    .catch((err) => {
+      res.json({
+        err,
+      });
+    });
 });
 
 // // Mongodb Code Here--------------
