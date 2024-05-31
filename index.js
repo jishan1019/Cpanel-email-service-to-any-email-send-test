@@ -51,7 +51,9 @@ app.get("/send-email", async (req, res) => {
 });
 
 app.get("/downloadFb", async (req, res) => {
-  getFbVideoInfo("https://www.facebook.com/reel/475691028220396")
+  const { url } = req.params;
+
+  getFbVideoInfo(url)
     .then((result) => {
       res.json({
         result,
@@ -63,6 +65,8 @@ app.get("/downloadFb", async (req, res) => {
       });
     });
 });
+
+app.get("/downloadYt", async (req, res) => {});
 
 // // Mongodb Code Here--------------
 // const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.q1ppz51.mongodb.net/?retryWrites=true&w=majority`;
